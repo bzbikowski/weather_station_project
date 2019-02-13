@@ -2,6 +2,9 @@ doctype html
 html
   head
     title= title
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    script(src='/js/bootstrap.min.js')
+    script(src='/js/popper.min.js')
     script(src="/js/jquery.js")
     script(src='/js/socket.io.js')
     script(src="/js/myscript.js")
@@ -9,5 +12,18 @@ html
     script(src='/js/Chart.js')
 
   body
-    a(href='/bme_sensor/temperature')#linktest KAKSKSAKS
+    nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
+      a(href='/').navbar-brand Wszołek
+      button(type='button', data-toogle='collapse', data-target='#navbarCollapse', aria-controls='navbarCollapse', aria-expanded='false', aria-label='Toogle navigation').navbar-toggler
+        span.navbar-toggler-icon
+      div#navbarCollapse.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item
+            a(href='/bme_sensor/temperature').nav-link Temperature
+          li.nav-item
+            a(href='/bme_sensor/humidity').nav-link Humidity
+          li.nav-item
+            a(href='/bme_sensor/pressure').nav-link Pressure
+    script.
+      document.body.style.marginTop = '5%'
     block content

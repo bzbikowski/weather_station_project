@@ -10,4 +10,8 @@ router.post('/', bme_controller.bme_post);
 
 router.get('/temperature/', bme_controller.view_temperature);
 
+router.get('/humidity/', bme_controller.view_humidity);
+
+router.get('/pressure/', bme_controller.view_pressure);
+
 module.exports = router;

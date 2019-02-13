@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-// var path = require('path');
-// var io = require('../bin/www');
+var model = require("../models/bme_sensor.model");
+var moment = require("moment");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {

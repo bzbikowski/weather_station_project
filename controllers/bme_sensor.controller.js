@@ -1,4 +1,5 @@
 var io = require('../bin/www');
+var mongoose = require('mongoose');
 var model = require("../models/bme_sensor.model");
 var moment = require("moment");
 
@@ -9,7 +10,7 @@ exports.bme_post = function (req, res) {
 
     var data = new model(
         {
-            time: moment().toDate(),
+            time: moment().add(1, 'hour'),
             temp_value: temperature,
             pres_value: pressure,
             hum_value: humidity
@@ -28,10 +29,35 @@ exports.bme_post = function (req, res) {
 };
 
 exports.bme_get = function (req, res, next) {
-    // todo return last received values as json
     res.render('index', {title: 'Express'});
 };
 
+io.on('connection', function (socket) {
+    socket.on('ready', async
+
+    function () {
+        var table;
+        var text;
+        await
+        model.find({time: {$gt: moment().subtract(7200, 'second').toDate()}}, function (err, doc) {
+            text = JSON.stringify(doc);
+            table = JSON.parse(text);
+        });
+        io.emit('init_data', table);
+    }
+
+)
+    ;
+});
+
 exports.view_temperature = function (req, res, next) {
     res.render('temp', {title: 'Express'});
+};
+
+exports.view_humidity = function (req, res, next) {
+    res.render('hum', {title: 'Express'});
+};
+
+exports.view_pressure = function (req, res, next) {
+    res.render('pre', {title: 'Express'});
 };

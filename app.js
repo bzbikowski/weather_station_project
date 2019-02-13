@@ -36,11 +36,15 @@ app.use('/', indexRouter);
 app.use('/bme_sensor', bmeRouter);
 
 app.use('/js', express.static(__dirname + '/node_modules/chart.js/dist/'));
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use('/js', express.static(__dirname + '/node_modules/popper.js/dist/'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use('/js', express.static(__dirname + '/node_modules/moment/'));
 app.use('/js', express.static(__dirname + '/public/javascripts/'));
 app.use('/js', express.static(__dirname + '/node_modules/socket.io-client/dist/'));
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/css', express.static(__dirname + '/public/stylesheets/'));
+app.use('/fonts', express.static(__dirname + '/node_modules/bootstrap/dist/fonts'));
 
 
 // catch 404 and forward to error handler
