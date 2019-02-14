@@ -1,5 +1,6 @@
 # Report of "Intelligent Measurement Systems" project
 
+
 #### Developers:
 
 Bartosz Żbikowski 154791
@@ -30,7 +31,7 @@ In order to read the measurement data, i.e. temperature, humidity, pressure, the
 The ESP8266 module transmits the collected data over a Wi-Fi network to the Raspberry Pi 3B+ microcontroller. 
 The Raspberry Pi acts as a web application server to visualize the collected measurement samples in the form of line graphs. 
 Communication between the server and the client located on the computer takes place via HTTP protocol.
- In order to collect the collected data, the MongoDb database, placed in the memory of the microcontroller, was used.
+ In order to collect the collected data, the MongoDB database, placed in the memory of the microcontroller, was used.
 
 In the prepared web application 2 types of requests are used for data transmission:
  GET (visualization of graphs based on measured data) and POST (transmission of measurement data from the client 
@@ -45,11 +46,4 @@ Achieved goals:
 * configuration of wireless communication between the WiFi Module and the Raspberry Pi microcontroller,
 * carrying out a correct writing and reading from the database on the server,
 * implementation of possibility of generating measurement charts through the created API,
-* creating the server-client structure in the form of RestAPI
-
-
-
-
-
-
-
+* creating the server-client structure in the form of RestAPI.

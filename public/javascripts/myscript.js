@@ -44,7 +44,11 @@ $(document).ready(function () {
                                 year: 'HH:mm:ss'
                             }
                         },
-                        distribution: 'linear'
+                        distribution: 'linear',
+                        ticks: {callback: function(value, index, values) {
+                                if (!values[index]) {return}
+                                return moment.utc(values[index]['value']).format('HH:mm:ss');
+                            }}
                     }]
                 }
             }
@@ -99,11 +103,9 @@ $(document).ready(function () {
         if(chart.data.datasets[0].data.length !== 0){
             while (true){
                 var lastValue = chart.data.datasets[0].data.shift();
-                console.log(lastValue);
                 var lastMoment = lastValue['x'];
-                console.log(lastMoment);
-                console.log(moment() - lastMoment);
-                if(moment() - lastMoment < 60*1000){
+                var lastTime = moment(lastMoment).subtract(1, 'hour');
+                if(moment() - lastTime < 60*1000){
                     chart.data.datasets[0].data.unshift(lastValue);
                     break;
                 }
@@ -111,40 +113,37 @@ $(document).ready(function () {
         }
     }
 
+    function onNewData(time, temperature, humidity, pressure){
+        /* Insert new data coming from sensor into charts, if any exists */
+        if (chartStatus[0]) {
+            deleteData(tempChart);
+            addData(tempChart, time, temperature);
+        }
+        if (chartStatus[1]) {
+            deleteData(humChart);
+            addData(humChart, time, humidity);
+        }
+        if (chartStatus[2]) {
+            deleteData(presChart);
+            addData(presChart, time, pressure);
+        }
+    }
 
-
-    socket.on('init_data', function (init_data) {
-        /* Initialize charts on loading document with data from the database */
+    // when document is fully ready, send signal to server that it can send init data
+    socket.emit('ready', 'hi', function (init_data) {
+        // initialize charts
         var elem;
         for (elem in init_data) {
-            console.log(init_data[elem]);
             if (chartStatus[0]) {
-                addData(tempChart, moment(init_data[elem]['time']).subtract(1, 'hour'), init_data[elem]['temp_value']);
+                addData(tempChart, moment(init_data[elem]['time']), init_data[elem]['temp_value']);
             }
             if (chartStatus[1]) {
-                addData(humChart, moment(init_data[elem]['time']).subtract(1, 'hour'), init_data[elem]['hum_value']);
+                addData(humChart, moment(init_data[elem]['time']), init_data[elem]['hum_value']);
             }
             if (chartStatus[2]) {
-                addData(presChart, moment(init_data[elem]['time']).subtract(1, 'hour'), init_data[elem]['pres_value']);
+                addData(presChart, moment(init_data[elem]['time']), init_data[elem]['pres_value']);
             }
         }
-
-        socket.on('new_data', function (temperature, humidity, pressure) {
-            /* Insert new data coming from sensor into charts, if any exists */
-            if (chartStatus[0]) {
-                deleteData(tempChart);
-                addData(tempChart, moment(), temperature);
-            }
-            if (chartStatus[1]) {
-                deleteData(humChart);
-                addData(humChart, moment(), humidity);
-            }
-            if (chartStatus[2]) {
-                deleteData(presChart);
-                addData(presChart, moment(), pressure);
-            }
-        });
+        socket.on('new_data', onNewData);
     });
-
-    socket.emit('ready', {}); // when document is fully ready, send signal to server that it can send init data
 });
