@@ -1,60 +1,51 @@
+# Report of "Intelligent Measurement Systems" project
 
-
-
-# Sprawozdanie z projektu ,,Inteligentne Systemy Pomiarowe”.
-
-#### Wykonawcy:
+#### Developers:
 
 Bartosz Żbikowski 154791
 
 Michał Camacho Romero 157185
 
-**A) Main target of the project**
+#### A) Purpose of the project
 
-W ramach wykonywanego projektu został zaprojektowany, system pogodowy, dokonujący pomiaru 
-temperatury, ciśnienia i wilgotności w czasie rzeczywistym. W celu wizualizacji zmierzonych danych, zaprojektowano API, 
-za pomocą którego istniała możliwość wygenerowanie wykresów temperatury, wilgotności oraz ciśnienia. Do zaprojektowania
-aplikacji webowej wykorzystano język programistyczny Node.js. 
+Main target of the project was to create a weather system to measure temperature, pressure and humidity in real time.
+In order to visualize the measurements, an API, which was able to generate graphs of temperature,
+ humidity and pressure, was designed. 
+The web application was designed using the programming language Node.js.
 
-##### B) Wykorzystane moduły:
+#### B) Used modules:
 
-* czujnik temperatury, wilgotności oraz ciśnienia BME280 I2C
-* moduł Raspberry Pi 3B+
-* moduł WIFI ESP8266 + NodeMCU
+* BME280 I2C temperature, humidity and pressure sensor
+* Raspberry Pi 3B+ module
+* WIFI module ESP8266 + NodeMCU
 
-##### C) Schemat ideowy zaprojektowanego układu
+#### C) Schematic diagram of the designed system
 
+![Screenshot](doc/blockScheme.png)
 
-![Screenshot](blockScheme.png)
+#### D) Description of the system functionality
 
-##### D) Opis działania wykonanego układu
+In order to read the measurement data, i.e. temperature, humidity, pressure, the BME280 sensor,
+ connected via the I2C interface to the ESP8266 Wi-Fi module, is used. 
+The ESP8266 module transmits the collected data over a Wi-Fi network to the Raspberry Pi 3B+ microcontroller. 
+The Raspberry Pi acts as a web application server to visualize the collected measurement samples in the form of line graphs. 
+Communication between the server and the client located on the computer takes place via HTTP protocol.
+ In order to collect the collected data, the MongoDb database, placed in the memory of the microcontroller, was used.
 
-W celu dokonania odczytu danych pomiarowych tj.: temperatura, wilgotność, ciśnienie, wykorzystywany jest czujnik
-BME280, podłączony po interfejsie I2C do modułu Wi-Fi ESP8266. Moduł ESP8266, przesyła zebrane dane po 
-sieci bezprzewodowej do mikrokontrolera Raspberry Pi 3B+. Urządzenie Raspberry Pi pełni funkcję serwera aplikacji
-webowej, służącej do wizualizacji zebranych próbek pomiarowych, w postaci wykresów liniowych. Komunikacja pomiędzy 
-serwerem, a klientem, znajdującym się na komputerze odbywa się po protokole HTTP. W celu gromadzenia zebranych
-danych, wykorzystano bazę danych MongoDb, umieszczoną w pamięci mikrokontrolera.
+In the prepared web application 2 types of requests are used for data transmission:
+ GET (visualization of graphs based on measured data) and POST (transmission of measurement data from the client 
+ (WiFi module) to the server (Raspberry Pi). The Wifi module transmits data to the server at a frequency of 1 sample per second.
+  Additionally, with each received data, on the client side, samples are checked and deleted if they are older than 60 seconds.
 
-W przygotowanej aplikacji webowej są wykorzystywane w celu transmisji danych 2 rodzaje requests: GET (wizualizacja wykresów
-na podstawie zmierzonych danych) oraz POST (przesyłanie danych pomiarowych z klienta (moduł WiFi) na serwer (Raspberry Pi).
- Moduł Wifi przesyła dane na serwer, z częstotliwością 1 próbki na sekundę. Dodatkowo z każdą odebraną daną, po stronie klienta, próbki są sprawdzane i usuwane, jeśli
- są one starsze niż 60 sekund. 
+#### E) Project results
 
-##### E) Rezultaty projektu
+Achieved goals:
 
-W ramach projektu zdołano:
-
-* skonfigurować komunikację po interfejsie I2C, pomiędzy sensorem, a modułem Wifi
-* skonfigurować komunikację bezprzewodową, pomiędzy modułem WiFi, a mikrokontrolerem Raspberry Pi
-* przeprowadzić poprawny zapis i odczyt z bazy danych na serwerze
-* zaimplementować możlwość wygenerowania wykresów pomiarowych, przez 
-utworzone API
-* zaprojektować strukturę serwe-klient w formie RestAPI
-
-
- 
-
+* configuration of communication on the I2C interface, between the sensor and the Wifi module,
+* configuration of wireless communication between the WiFi Module and the Raspberry Pi microcontroller,
+* carrying out a correct writing and reading from the database on the server,
+* implementation of possibility of generating measurement charts through the created API,
+* creating the server-client structure in the form of RestAPI
 
 
 
