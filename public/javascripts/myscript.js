@@ -76,7 +76,7 @@ $(document).ready(function () {
     }
 
     function checkForCharts() {
-        /* */
+        /* Check if all charts are created in document */
         var i1 = false, i2 = false, i3 = false;
         var elem = document.getElementById('tempChart');
         if (elem !== null) {
@@ -95,6 +95,7 @@ $(document).ready(function () {
     }
 
     function deleteData(chart){
+        /* Delete data from chart, which is older than one minute */
         if(chart.data.datasets[0].data.length !== 0){
             while (true){
                 var lastValue = chart.data.datasets[0].data.shift();
@@ -110,23 +111,10 @@ $(document).ready(function () {
         }
     }
 
-    socket.on('new_data', function (temperature, humidity, pressure) {
 
-        if (chartStatus[0]) {
-            deleteData(tempChart);
-            addData(tempChart, moment(), temperature);
-        }
-        if (chartStatus[1]) {
-            deleteData(humChart);
-            addData(humChart, moment(), humidity);
-        }
-        if (chartStatus[2]) {
-            deleteData(presChart);
-            addData(presChart, moment(), pressure);
-        }
-    });
 
     socket.on('init_data', function (init_data) {
+        /* Initialize charts on loading document with data from the database */
         var elem;
         for (elem in init_data) {
             console.log(init_data[elem]);
@@ -140,6 +128,23 @@ $(document).ready(function () {
                 addData(presChart, moment(init_data[elem]['time']).subtract(1, 'hour'), init_data[elem]['pres_value']);
             }
         }
+
+        socket.on('new_data', function (temperature, humidity, pressure) {
+            /* Insert new data coming from sensor into charts, if any exists */
+            if (chartStatus[0]) {
+                deleteData(tempChart);
+                addData(tempChart, moment(), temperature);
+            }
+            if (chartStatus[1]) {
+                deleteData(humChart);
+                addData(humChart, moment(), humidity);
+            }
+            if (chartStatus[2]) {
+                deleteData(presChart);
+                addData(presChart, moment(), pressure);
+            }
+        });
     });
-    socket.emit('ready', {});
+
+    socket.emit('ready', {}); // when document is fully ready, send signal to server that it can send init data
 });
