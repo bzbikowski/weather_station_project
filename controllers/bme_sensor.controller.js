@@ -33,13 +33,10 @@ exports.bme_get = function (req, res, next) {
 };
 
 io.on('connection', function (socket) {
-    socket.on('ready', async
-
-    function () {
+    socket.on('ready', async function () {
         var table;
         var text;
-        await
-        model.find({time: {$gt: moment().subtract(7200, 'second').toDate()}}, function (err, doc) {
+        await model.find({time: {$gt: moment().subtract(60, 'second').toDate()}}, function (err, doc) {
             text = JSON.stringify(doc);
             table = JSON.parse(text);
         });

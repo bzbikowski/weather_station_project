@@ -5,7 +5,6 @@ var moment = require("moment");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    // todo init data from database to client
     res.render('index', {title: 'Express'});
 });
 

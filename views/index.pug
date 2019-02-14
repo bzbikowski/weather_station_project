@@ -2,8 +2,12 @@ extends layout
 
 block content
 
-  p Strona startowa
+    div.container-ch
+        div.chart-container
+            canvas(style="display: block;")#tempChart
 
-  canvas(width="10%", height="5%")#tempChart
-  canvas(width="10%", height="5%")#humChart
-  canvas(width="10%", height="5%")#presChart
+        div.chart-container
+            canvas(style="display: block;")#humChart
+
+        div.chart-container
+            canvas(style="display: block;")#presChart
