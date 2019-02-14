@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+//Creation of document schema
 var GeneralSchema = new Schema({
     time: {type: Date, required: true},
     temp_value: {type: Number, required: true},

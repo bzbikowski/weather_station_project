@@ -3,12 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+//Creation of router for communication, between server & client
 var indexRouter = require('./routes/index');
 var bmeRouter = require('./routes/bme_sensor.route');
 
 var app = express();
-
+//Creation of moongoose data base, which holds gathered samples from BME280 sensor.
 var mongoose = require('mongoose');
 var dev_db_url = 'mongodb://localhost:27017/home_automation';
 var mongoDB = process.env.MONGODB_URI || dev_db_url;
